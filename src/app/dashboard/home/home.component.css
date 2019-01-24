@@ -1,0 +1,116 @@
+.dropdown .dropdown-menu {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  max-height: 0;
+  display: block;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.dropdown:hover .dropdown-menu {
+  max-height: 200px;
+  opacity: 1;
+  transition: all 1s;
+}
+
+.dropdown-menu>a:hover {
+  background-color: #17a2b8;
+}
+
+
+#tile {
+  width: 100%;
+  height: 100vh;
+}
+
+#imageMap {
+  width: 100%;
+  height: 100vh;
+}
+
+
+.sidenav {
+  max-height: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 99;
+  top: 55px;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  cursor: none;
+  z-index: 10;
+}
+
+.sidebar-content {
+  height: 50px;
+  font-size: 2rem;
+  font-weight: bold;
+  font-stretch: ultra-expanded;
+  border-bottom-style: solid;
+  border-bottom-color: #17a2b8;
+}
+
+.switch {
+  position: relative;
+  float: right;
+  width: 47px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+
+input:checked+.slider {
+  background-color: #ffc107;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #ffc107;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
