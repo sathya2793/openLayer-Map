@@ -16,6 +16,7 @@ import { FormsModule} from '@angular/forms';
 import { UserModule } from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
+
 let firebaseConfig ={
   apiKey: "AIzaSyBjxEnyMvLJjQu-SPSrmtdPjORVtTLLYG0",
   authDomain: "enroco-b1291.firebaseapp.com",

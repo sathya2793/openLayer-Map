@@ -1,53 +1,88 @@
 <div class="wrapper">
 
-<nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand text-white">OpenLayers</a>
-  <form class="form-inline">
-    <div class="dropdown">
-      <button class="btn btn-outline-info text-white dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Welcome {{userName}}
-      </button>
-      <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenu">
-        <a aria-label="logout" title="logout" class="btn dropdown-item text-white" (click)="logout()"><i class="fa fa-sign-out mx-2"></i>Logout</a>
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand text-white">OpenLayers</a>
+    <form class="form-inline">
+      <div class="dropdown">
+        <button class="btn btn-outline-info text-white dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Welcome {{userName}}
+        </button>
+        <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenu">
+          <a aria-label="logout" title="logout" class="btn dropdown-item text-white" (click)="logout()"><i class="fa fa-sign-out mx-2"></i>Logout</a>
+        </div>
       </div>
-    </div>
-  </form>
-</nav>
+    </form>
+  </nav>
 
-<div id="mySidenav" class="sidenav bg-dark border" *ngIf="showSidebar" [ngStyle]="{ 'width' : (showSidebar==false) ? '0px': '260px'  }">
-  <nav id="sidebar" class="sidebar ">
-    <div class="sidebar-content text-white text-center">
-      LAYERS <span style="float:right;cursor:pointer;" (click)="hideSidebarScreen()" ><i class="fa mx-1 text-white fa-close"></i></span>
-    </div>
-    <div class="jumbotron jumbotron-fluid mt-1">
-      <button type="button" class="btn btn-info btn-lg btn-block text-left"  (click)="checkbox('tile')">Tile Layer<label class="switch mt-1">
-            <input type="checkbox" id="t" value="tile" [(ngModel)]="tile" >
+  <div id="mySidenav" class="sidenav bg-dark border" *ngIf="showSidebar" [ngStyle]="{ 'width' : (showSidebar==false) ? '0px': '260px'  }">
+    <nav id="sidebar" class="sidebar" style="cursor:default;">
+      <div class="sidebar-content text-white text-center">
+        LAYERS <span style="float:right;cursor:pointer;" (click)="hideSidebarScreen()"><i class="fa mx-1 text-white fa-close"></i></span>
+      </div>
+      <div class="jumbotron jumbotron-fluid mt-1">
+        <button type="button" class="btn btn-info btn-lg btn-block text-left" (click)="checkbox('tile')">Tile Layer<label
+            class="switch mt-1">
+            <input type="checkbox" id="t" value="tile" [(ngModel)]="tile">
             <span class="slider round"></span>
           </label></button>
-      <button type="button" class="btn btn-info btn-lg btn-block text-left"  (click)="checkbox('raster')">Raster Layer<label class="switch mt-1">
+        <button type="button" class="btn btn-info btn-lg btn-block text-left" (click)="checkbox('raster')">Raster Layer<label
+            class="switch mt-1">
             <input type="checkbox" id="r" value="raster" [(ngModel)]="raster">
             <span class="slider round"></span>
           </label></button>
-    </div>
-  </nav>
-  
-</div>
-<ngx-spinner
-bdColor = "rgba(51, 51, 51, 0.8)" size = "medium" color = "#0de353" type = "square-jelly-box"
-></ngx-spinner> 
-<div [ngStyle]="{ 'display' : (msg==='tile') ? 'block' : 'none'}">
-    <div id="tile" class="map"></div>
-    </div>
-    <div *ngIf="showSidebar" (click)="hideSidebarScreen()" style=" float: left; top:35vh; left:260px; background-color:#6991b8; width:40;height:60; padding:6px; position:fixed;cursor:pointer;">
-        <span><i class="fa fa-2x text-white fa-arrow-circle-left"></i></span>
+        <button type="button" class="btn btn-info btn-lg btn-block text-left" (click)="goToCropImage()">Static Image<label
+            class="switch mt-1">
+            <input type="checkbox" id="i" value="loadImage" [(ngModel)]="loadImage">
+            <span class="slider round"></span>
+          </label></button>
       </div>
-    <div>
-    <div id="imageMap" class="map"></div>
+      <label *ngIf="crop || loadCrop" class="text-white font-weight-bold mx-3">Map Tools:</label>
+      <div *ngIf="crop || loadCrop">
+        <button type="button" class="btn m-3 p-1 text-white" (click)="toggleCrop()" [ngStyle]="{'background-color': loadCrop ? 'green' : 'blue' }"><i
+            class="fa fa-crop mx-2"></i><span>Crop</span></button>
+      </div>
+    </nav>
+    <p (click)="hideSidebarScreen()" style="float: left; top:35vh; left:260px; background-color:#6991b8; width:40;height:60; padding:6px; position:fixed;cursor:pointer;">
+      <span><i class="fa fa-2x text-white fa-arrow-circle-left"></i></span>
+    </p>
+  </div>
+
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#0de353" type="square-jelly-box"></ngx-spinner>
+
+  <div *ngIf="crop">
+    <div id="cropMap" class='map'></div>
+  </div>
+
+  <div *ngIf="loadCrop" id="droppable">
+    <div *ngIf="!crop" id="resize" class="resizable  draggable">
+      <div id="cropMap1" class="map" contenteditable="true"></div>
+      <div class="ui-resizable-handle ui-resizable-nw"></div>
+      <div class="ui-resizable-handle ui-resizable-ne"></div>
+      <div class="ui-resizable-handle ui-resizable-sw"></div>
+      <div class="ui-resizable-handle ui-resizable-se"></div>
+      <div class="ui-resizable-handle ui-resizable-n"></div>
+      <div class="ui-resizable-handle ui-resizable-s"></div>
+      <div class="ui-resizable-handle ui-resizable-e"></div>
+      <div class="ui-resizable-handle ui-resizable-w"></div>
     </div>
-<!--   
-<app-map [events]="eventsSubject.asObservable()"></app-map>--> 
-<div (click)="showSidebarScreen()" style="float: left; top: 35vh; left:0; background-color:#6991b8; width:40;height:60; padding:6px; position: fixed;cursor:pointer;">
-  <span><i class="fa fa-2x text-white fa-arrow-circle-right"></i></span>
-</div>
+    <div class="ol-custom-crop btn" [ngStyle]="{'background-color': scrolling ? '#6991b8' : '#0001' }" style="border-radius: 50%;cursor:pointer; position: fixed; display: flex;align-items: center;justify-content: center;bottom: 3em;left:50%;">
+      <span class="fa fa-arrows text-white text-center" (click)="scroll()"></span>
+    </div>
+    <div class="ol-custom-save btn" style="border-radius: 50%;cursor:pointer; position: fixed;bottom: 2em;right: 1em;background-color: transparent;">
+      <i class="fa fa-3x fa-check-circle"  [ngStyle]="{'color': save ? 'lightseagreen' : '#6991b8' }" (click)="savePosition()"></i>
+    </div>
+  </div>
+
+  <div [ngStyle]="{ 'display' : (msg==='tile') ? 'block' : 'none'}">
+    <div id="tile" class="map"> </div>
+  </div>
+
+  <div *ngIf="!crop">
+    <div id="imageMap" class="map"></div>
+  </div>
+
+  <div (click)="showSidebarScreen()" style="float: left; top: 35vh; left:0; background-color:#6991b8; width:40;height:60; padding:6px; position: fixed;cursor:pointer;">
+    <span><i class="fa fa-2x text-white fa-arrow-circle-right"></i></span>
+  </div>
 </div>

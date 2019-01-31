@@ -6,12 +6,14 @@ import { RouterModule } from '@angular/router';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from '../auth.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ResizableModule } from 'angular-resizable-element';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     NgxSpinnerModule,
+    ResizableModule,
     RouterModule.forChild([
       {path: 'home', component:HomeComponent,canActivate:[AuthGuardService] }])
   ],

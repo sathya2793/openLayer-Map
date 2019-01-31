@@ -21,13 +21,20 @@
 }
 
 
-#tile {
+#tile,#imageMap{
   width: 100%;
   height: 100vh;
 }
 
-#imageMap {
-  width: 100%;
+#cropMap{
+  width: 70%;
+  height: 70vh;
+  overflow: hidden;
+}
+
+#cropMap1{
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   height: 100vh;
 }
 
